@@ -1,0 +1,111 @@
+---
+title: "Lecture 3: Point Level Models"
+output:
+  revealjs::revealjs_presentation:
+    theme: night
+    center: true
+    transition: none
+    incremental: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+```
+
+# Overview of Point Level Models
+
+## Visual Motivation
+```{r, out.width = "80%", echo = F, fig.align = 'center', fig.cap='source: airnow.gov'}
+knitr::include_graphics("MT_Air.png") 
+```
+
+## Basic Notation
+
+- The response, $Y(\boldsymbol{s})$, is a random variable at location(s) $\boldsymbol{s}$
+- $\boldsymbol{s}$ varies continuously over the space
+- Typically, $\boldsymbol{s} \in \mathcal{R}^2$ or $\boldsymbol{s} \in \mathcal{D}$, where $\mathcal{D} \subset \mathcal{R}^2$, such as Montana.
+- $Y(\boldsymbol{s})$ is a stochastic process, or a collection of random variables.
+- In spatial settings, $Y(\boldsymbol{s})$ is referred to as a *spatial process*.
+
+## Conceptual Challenge: Questions
+#### Goals
+
+- Inference about spatial process $Y(\boldsymbol{s})$
+- Create a continous map of air quality, or more generally predict the response at new locations given the partial realization of the process
+
+#### Discussion Questions
+- What is the dimension of the spatial process, $Y(\boldsymbol{s})$?
+- How are predictions made at unsampled locations, and a related question, what does "inference about a spatial process" mean?
+
+
+## Conceptual Challenge: Solutions
+#### Goals
+
+> - Inference about spatial process $Y(\boldsymbol{s})$
+> - Create a continous map of air quality, or more generally predict the response at new locations given the partial realization of the process
+
+#### Discussion Questions
+> - What is the dimension of the spatial process, $Y(\boldsymbol{s})$?
+<small>It is defined across the entire space, so infinite dimensional.</small>
+- How are predictions made at unsampled locations, and a related question, what does "inference about a spatial process" mean?
+<small> the spatial process is assumed to have mean (or covariate) properties as well as a specified covariance structure as a function of distance. Similar to a standard regression model, predictions are made using the covariates and covariance. </small>
+
+## Spatial Covariance
+- Spatial covariance is characterized by the distance between locations
+- With a structured covariance, few parameters are necessary
+- A covariance function must be symmetric:  $Cov(Y(\boldsymbol{s}_1),Y(\boldsymbol{s}_2)) = Cov(Y(\boldsymbol{s}_2),Y(\boldsymbol{s}_1))$
+- A common covariance is the exponential covariance, where
+$$Cov(Y(\boldsymbol{s}_1),Y(\boldsymbol{s}_2)) = \sigma^2 \exp(-\phi d_{12}),$$
+where $d_{12}$ is the distance between $\boldsymbol{s}_1$ and $\boldsymbol{s}_2$.
+
+## Exponential Covariance: Questions
+The exponential covariance function has two parameters:
+
+$$Cov(Y(\boldsymbol{s}_1),Y(\boldsymbol{s}_2)) = \sigma^2 \exp(-\phi d_{12}),$$
+
+Describe the how the parameters contribute to the covariance:
+
+> - $\phi$
+> - $\sigma^2$
+
+
+## Exponential Covariance: Solution
+The exponential covariance function has two parameters:
+
+$$Cov(Y(\boldsymbol{s}_1),Y(\boldsymbol{s}_2)) = \sigma^2 \exp(-\phi d_{12}),$$
+
+Describe the how the parameters contribute to the covariance:
+
+- $\phi$: <small> controls the correlation. In particular, $\exp(-\phi d_{12})$ will be between 0 and 1 (with $\phi > 0$ and $d_{12} \geq 0$). When $d_{12}  \gg \frac{1}{\phi},$ the correlation goes to zero and When $d_{12}  \ll \frac{1}{\phi},$ the correlation goes to one. $\frac{1}{\phi}$ is known as the *range parameter*. </small>
+- $\sigma^2$: <small> is a scaling parameter associated with the correlation. $\sigma^2$ is called the partial sill </small>
+
+
+## Joint Distribution
+A joint distribution is specified to model the spatial covariance using standard likelihood-based techniques.
+
+- Let $\boldsymbol{Y} := \{Y(\boldsymbol{s}_i) \}$ for locations $\boldsymbol{s_i}, i = 1, \dots, n$
+- Then assume 
+$$\boldsymbol{Y}|\mu, \boldsymbol{\theta} \sim MVN_n(\mu \boldsymbol{1}_n, \Sigma(\boldsymbol{\theta})),$$
+where $\boldsymbol{\theta}$ is a vector of parameters that determine the variance.
+
+## Parameter Estimation: Questions
+- Write out the likelihood for $\boldsymbol{Y}$
+- Describe the process for estimating the parameters in the model
+
+## Parameter Estimation: Solutions
+> - Write out the likelihood for $\boldsymbol{Y}$:
+<small>$$\boldsymbol{Y}|\mu, \boldsymbol{\theta} = (2 \pi) ^{n/2} |\Sigma(\boldsymbol{\theta})|^{-1/2} \exp\left[-\frac{1}{2}(\boldsymbol{Y} - \boldsymbol{1}\mu)^T \Sigma(\boldsymbol{\theta})^{-1} (\boldsymbol{Y} - \boldsymbol{1}\mu) \right]$$</small>
+> - Describe the process for estimating the parameters in the model
+<small> maximum likelihood for $\mu$, and $\boldsymbol{\theta}$ or
+with Bayesian techniques using prior distributions and Markov Chain Monte Carlo</small>
+
+
+
+# Stationarity
+
+# Anisotropy
+
+# EDA
+
+# Model Fitting
